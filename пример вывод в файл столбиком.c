@@ -12,7 +12,7 @@ int main() {
             printf("\n");
             count = 0;
         } 
-        //printf("Элемент %d: %d\n", i, numbers[i]);
+        //printf("Элемент %d: %d\n", i, numbers[i]); - закомментированная строка
     }
 }
 
