@@ -1,0 +1,81 @@
+/*
+ ============================================================================
+ Name        : 5.c
+ Author      : 
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    int N, A, B;
+
+    printf("Введите N, A, B: ");
+    scanf("%d %d %d", &N, &A, &B);
+
+    srand(time(NULL));
+
+    int arr[N];
+
+    // Заполняем массив случайными числами
+    for(int i = 0; i < N; i++) {
+        arr[i] = A + rand() % (B - A + 1);
+    }
+
+    FILE *file = fopen("output.txt", "w");
+    if(file == NULL) {
+        printf("Ошибка создания файла\n");
+        return 1;
+    }
+
+    // Записываем массив в файл
+    fprintf(file, "Массив: ");
+    for(int i = 0; i < N; i++) {
+        fprintf(file, "%d ", arr[i]);
+    }
+    fprintf(file, "\n");
+
+    // Находим минимум и максимум, кратные 3
+    int min3 = 999999, max3 = -999999;
+    for(int i = 0; i < N; i++) {
+        if(arr[i] % 3 == 0) {
+            if(arr[i] < min3) min3 = arr[i];
+            if(arr[i] > max3) max3 = arr[i];
+        }
+    }
+
+    // Проверяем, найдены ли такие элементы
+    if(min3 == 999999 || max3 == -999999) {
+        fprintf(file, "Нет элементов кратных 3\n");
+        fclose(file);
+        printf("Массив записан в файл output.txt\n");
+        return 0;
+    }
+
+    int sum_min_max = min3 + max3;
+
+    // Находим сумму положительных элементов > sum_min_max
+    int sum_positive = 0;
+    for(int i = 0; i < N; i++) {
+        if(arr[i] > 0 && arr[i] > sum_min_max) {
+            sum_positive += arr[i];
+        }
+    }
+
+    // Дописываем результат в файл
+    fprintf(file, "Мин. кратное 3: %d\n", min3);
+    fprintf(file, "Макс. кратное 3: %d\n", max3);
+    fprintf(file, "Их сумма: %d\n", sum_min_max);
+    fprintf(file, "Сумма положительных > суммы: %d\n", sum_positive);
+
+    fclose(file);
+    printf("Результат записан в файл output.txt\n");
+
+    return 0;
+}
+
