@@ -1,0 +1,55 @@
+/*
+ ============================================================================
+ Name        : 4.c
+ Author      : 
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+
+int main() {
+    FILE *file;
+    int N;
+
+    // Читаем N из файла
+    file = fopen("input.txt", "r");
+    if (file == NULL) {
+        printf("Ошибка открытия файла input.txt\n");
+        return 1;
+    }
+
+    fscanf(file, "%d", &N); //для себя определим, что первое число в файле - это размер массива
+    int arr[N];
+
+    // Читаем массив из файла
+    for(int i = 0; i < N; i++) {
+        fscanf(file, "%d", &arr[i]);
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    fclose(file);
+
+    // Изменяем элементы массива
+    for(int i = 0; i < N; i++) {
+        if(arr[i] > 0) {
+            // Меняем знак положительных элементов
+            arr[i] = -arr[i];
+        } else if(arr[i] < 0) {
+            // Заменяем отрицательные на их последние цифры
+            arr[i] = arr[i] % 10;
+        }
+    }
+
+    // Выводим измененный массив
+    for(int i = 0; i < N; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
