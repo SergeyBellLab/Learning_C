@@ -1,0 +1,108 @@
+/*
+ ============================================================================
+ Name        : Задание 6.6.c
+ Author      : 
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    // Переменные для размеров массивов и диапазона случайных чисел
+    int N, M, A, B;
+
+    // Ввод параметров от пользователя
+    printf("Введите N, M, A, B: ");
+    scanf("%d %d %d %d", &N, &M, &A, &B);
+
+    // Инициализация генератора случайных чисел текущим временем
+    srand(time(NULL));
+
+
+    // Заполнение первого массива случайными числами
+    printf("\nЗаполняем массив %dx%d случайными числами из [%d; %d]...\n", N, M, A, B);
+
+    int int_array[N][M];
+
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < M; j++) {
+            // Генерируем случайное число в диапазоне [A; B] включительно
+            int_array[i][j] = A + rand() % (B - A + 1);
+        }
+    }
+
+    // Запись массива в файл array.txt
+    FILE *file = fopen("array.txt", "w");  // Открываем файл для записи (перезаписываем)
+
+    // Записываем элементы массива построчно (прямоугольный вид)
+    printf("Записываем массив в файл array.txt:\n");
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < M; j++) {
+            fprintf(file, "%d ", int_array[i][j]);
+        }
+        fprintf(file, "\n");  // Переход на новую строку после каждой строки массива
+    }
+    printf("Файл array.txt успешно создан.\n");
+    fclose(file);  // Закрываем файл
+
+    // Чтение данных из файла в new_array
+	int new_array[N][M];
+    file = fopen("array.txt", "r");  // Открываем файл для чтения
+
+    printf("Читаем данные из файла в new_array...\n");
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < M; j++) {
+            fscanf(file, "%d", &new_array[i][j]);
+        }
+    }
+    fclose(file);
+
+    // Вычисления
+
+    // 1. Сумма всех положительных элементов
+    int sum_positive = 0;
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < M; j++) {
+            if(new_array[i][j] > 0) {
+                sum_positive += new_array[i][j];
+            }
+        }
+    }
+
+    // 2. Среднее значение отрицательных элементов 2-й строки
+    int count_neg_row2 = 0;
+    double sum_neg_row2 = 0;
+    printf("Анализируем 2-ю строку (индекс 1):\n");
+    for(int j = 0; j < M; j++) {
+        if(new_array[1][j] < 0) {
+           sum_neg_row2 += new_array[1][j];
+           count_neg_row2++;
+         }
+     }
+
+    double avg_neg_row2 = (count_neg_row2 > 0) ? (double)sum_neg_row2 / count_neg_row2 : 0.0;
+
+    // 3. Минимальный положительный элемент главной диагонали (new_array[i][i])
+    int min_diag_pos = 999999;
+    int diag_size = (N < M) ? N : M;  // Размер диагонали
+
+    printf("Анализируем главную диагональ (%d элементов):\n", diag_size);
+    for(int i = 0; i < diag_size; i++) {
+        if(new_array[i][i] > 0 && new_array[i][i] < min_diag_pos) {
+            min_diag_pos = new_array[i][i];
+        }
+    }
+
+    // Вывод результатов
+    printf("\n РЕЗУЛЬТАТЫ АНАЛИЗА \n");
+    printf("1. Сумма всех положительных элементов: %d\n", sum_positive);
+    printf("2. Среднее отрицательных элементов 2-й строки: %.2f\n", avg_neg_row2);
+    printf("3. Мин. положительный элемент диагонали: %d\n", min_diag_pos);
+
+    return 0;
+}
