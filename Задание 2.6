@@ -1,0 +1,58 @@
+/*
+ ============================================================================
+ Name        : 6.c
+ Author      : 
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <string.h>
+
+//Задать две строки с клавиатуры и с помощью стандартных функций образовать две новые строки сочетанием изначальных строк.
+//Далее в каждую новую строку дописать бОльшую из изначальный строк. Вывести на экран изначальные и получившиеся строки.
+
+int main() {
+    char str1[100], str2[100];
+    char new1[200], new2[200];
+
+    printf("Введите первую строку: ");
+    fgets(str1, sizeof(str1), stdin);
+    str1[strcspn(str1, "\n")] = 0;  // Удаляем \n
+
+    printf("Введите вторую строку: ");
+    fgets(str2, sizeof(str2), stdin);
+    str2[strcspn(str2, "\n")] = 0;  // Удаляем \n
+
+    //strcpy(str_1, str_2)    -  Копирование строки str_2 в строку str_1
+    //strcat(str_1, str_2)    -  Дописать строку str_2 в строку str_1
+
+    // Первая новая строка: начало str1 + начало str2
+    strcpy(new1, str1);
+    strcat(new1, str2);
+
+    // Вторая новая строка: начало str2 + начало str1
+    strcpy(new2, str2);
+    strcat(new2, str1);
+
+    // Определяем большую строку по длине
+    char *bigger = (strlen(str1) > strlen(str2)) ? str1 : str2;
+
+    // Дописываем большую строку к каждой новой
+    strcat(new1, bigger);
+    strcat(new2, bigger);
+
+    // Вывод результатов
+    printf("\nИзначальные строки:\n");
+    printf("str1 = \"%s\"\n", str1);
+    printf("str2 = \"%s\"\n\n", str2);
+
+    printf("Новые строки:\n");
+    printf("new1 = \"%s\"\n", new1);
+    printf("new2 = \"%s\"\n", new2);
+
+    return 0;
+}
+
