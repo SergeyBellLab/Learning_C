@@ -1,0 +1,69 @@
+/*
+ ============================================================================
+ Name        : 8.c
+ Author      : 
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <ctype.h>
+
+long long factorial(int n) {
+    long long fact = 1;
+    for (int i = 1; i <= n; ++i) {
+        fact *= i;
+    }
+    return fact;
+}
+
+void print_factorial(int digit, long long fact) {
+    printf("<%d! = ", digit);
+    for (int i = 1; i <= digit; ++i) {
+        printf("%d", i);
+        if (i < digit) printf(" * ");
+    }
+    printf(" = %11d>", fact);
+}
+
+int main() {
+    // Создаем ПРОГРАММНО англоязычный текстовый файл
+    FILE *file = fopen("sample.txt", "w");
+    if (file == NULL) {
+        printf("Ошибка создания файла\n");
+        return 1;
+    }
+    fprintf(file, "General greetings. The file contains the test data for the task. A set of numbers: 5, 5, 7, 1\n");
+    fclose(file);
+
+    // Читаем файл и находим максимальную цифру
+    file = fopen("sample.txt", "r");
+    if (file == NULL) {
+        printf("Ошибка открытия файла\n");
+        return 1;
+    }
+
+    int max_digit = -1;
+    int ch;
+    while ((ch = fgetc(file)) != EOF) {
+        if (isdigit(ch)) {
+            int digit = ch - '0';
+            if (digit > max_digit) {
+                max_digit = digit;
+            }
+        }
+    }
+    fclose(file);
+
+    if (max_digit == -1) {
+        printf("Не найдены цифры в файле\n");
+        return 1;
+    }
+
+    long long fact = factorial(max_digit);
+    print_factorial(max_digit, fact);
+
+    return 0;
+}
