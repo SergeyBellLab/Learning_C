@@ -1,0 +1,50 @@
+/*
+ ============================================================================
+ Name        : Задание.c
+ Author      : 
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_LEN 100
+
+int main() {
+    int N;
+    int even_count = 0;            // Счетчик строк с четным количеством символов
+
+    printf("Введите N: ");
+    scanf("%d", &N);
+    getchar();  // Очистка буфера после scanf
+
+    char animals[N][MAX_LEN];  // Массив строк для названий животных
+
+    printf("Введите %d названий животных из семейства кошачьих на английском языке:\n", N);
+    for (int i = 0; i < N; i++) {
+        fgets(animals[i], MAX_LEN, stdin);  // Ввод строки с клавиатуры
+        animals[i][strcspn(animals[i], "\n")] = 0;  // Удаление символа новой строки
+    	//scanf("%100s", animals[i]);
+    }
+
+    // Вывод в столбик всех элементов с комментарием
+    printf("\nВсе элементы массива:\n");
+    for (int i = 0; i < N; i++) {
+        printf("%s - длина %d символов", animals[i], strlen(animals[i]));
+        if (strlen(animals[i]) % 2 == 0) {
+            printf(" (четная)");
+            even_count++;
+        } else {
+            printf(" (нечетная)");
+        }
+        printf("\n");  // Вывод каждой строки в столбик
+    }
+
+    // Количество строк с четным числом символов
+    printf("\nКоличество строк с четным количеством символов: %d\n", even_count);
+
+    return 0;
+}
